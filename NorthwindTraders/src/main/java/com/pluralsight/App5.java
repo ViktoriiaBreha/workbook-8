@@ -1,21 +1,27 @@
 package com.pluralsight;
 
+import org.apache.commons.dbcp2.BasicDataSource;
 import java.sql.*;
 import java.util.Scanner;
 
-public class App4 {
+public class App5 {
     public static void main(String[] args) {
 
         Scanner scanner = new Scanner(System.in);
 
         String url = "jdbc:mysql://127.0.0.1:3306/northwind";
-        String user = "root";
-        String password = "yearup";
+        String user = args[0];
+        String password = args[1];
+
+        BasicDataSource dataSource = new BasicDataSource();
+        dataSource.setUrl(url);
+        dataSource.setUsername(user);
+        dataSource.setPassword(password);
 
         ResultSet results = null;
         Statement statement = null;
 
-        try (Connection connection = DriverManager.getConnection(url, user, password)) {
+        try (Connection connection = dataSource.getConnection()) {
             boolean run = true;
 
             while (run){
@@ -66,7 +72,7 @@ public class App4 {
     public static void displayProducts (Connection connection){
         String query = "SELECT ProductID, ProductName, UnitPrice, UnitsInStock FROM Products";
         try (Statement statement = connection.createStatement();
-        ResultSet resultSet = statement.executeQuery(query)) {
+             ResultSet resultSet = statement.executeQuery(query)) {
             System.out.printf("%-5s %-35s %-10s %-5s%n", "Id", "Name", "Price", "Stock");
             System.out.println("-------------------------------------------------------------");
 
@@ -153,7 +159,7 @@ public class App4 {
 
 
         }catch (SQLException e) {
-           e.printStackTrace();
+            e.printStackTrace();
         }
     }
 }
