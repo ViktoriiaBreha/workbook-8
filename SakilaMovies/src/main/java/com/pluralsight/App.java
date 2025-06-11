@@ -44,11 +44,29 @@ public class App {
                         System.out.println("Thank you for using our app!");
                         run = false;
                         break;
+                    default:
+                        System.out.println("Invalid input, try again");
+                        break;
 
                 }
             }
         } catch (SQLException e){
             e.printStackTrace();
+        }finally {
+            if (results != null) {
+                try {
+                    results.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (statement != null) {
+                try {
+                    statement.close();
+                } catch (SQLException e ) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 
