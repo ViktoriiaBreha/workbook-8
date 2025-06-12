@@ -51,7 +51,29 @@ public class DataManager {
     }
 
     public List <Film> getFilmsByActorId (int actorID){
-        
+        List <Film> films = new ArrayList<>();
+
+        String query = "SELECT title, description , release_year FROM film AS f JOIN film_actor AS fa ON f.film_id = " +
+                "fa.film_id WHERE fa.actor_id = ?";
+
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)){
+
+            preparedStatement.setInt(1, actorID);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()){
+                String title = resultSet.getString("title");
+                String description = resultSet.getString("description");
+                int year = resultSet.getInt("release_year");
+
+                films.add(new Film(title, description, year));
+            }
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return films;
+
     }
 
 }

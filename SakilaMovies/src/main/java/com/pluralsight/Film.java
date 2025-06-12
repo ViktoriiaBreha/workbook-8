@@ -7,7 +7,7 @@ public class Film {
     private int releaseYear;
     private int length;
 
-    public Film(int filmId, String title, String description, int releaseYear, int length) {
+    public Film(String title, String description, int releaseYear) {
         this.filmId = filmId;
         this.title = title;
         this.description = description;
